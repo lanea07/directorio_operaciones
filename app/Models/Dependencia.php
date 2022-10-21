@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Directory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Dependencia extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'nombre',
+        'direccion',
+        'telefono',
+    ];
+
+    public function directorio(){
+        return $this->hasMany(Directorio::class);
+    }
+}

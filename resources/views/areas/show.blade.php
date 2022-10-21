@@ -1,0 +1,41 @@
+@extends('layouts.app')
+
+@section('title', 'Gerencia | '.$area->nombre)
+
+@section('content')
+<div class="container">
+    <div class="bg-white p-5 shadow rounded">
+
+        <div class="row">
+            <h1>{{ $area->nombre }}</h1>
+            <p class="text-secondary">Pertenece a Gerencia: {{ $area->gerencia->nombre }}</p>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-4">
+                <h6 class="text-muted">Creado</h6>
+                <p class="text-black-50">{{ $area->created_at->diffForHumans() }} ({{$area->created_at->format('d/m/Y')}})</p>
+            </div>
+            <div class="col-4">
+                <h6 class="text-muted">Actualizado</h6>
+                <p class="text-black-50">{{ $area->updated_at->diffForHumans() }} ({{$area->updated_at->format('d/m/Y')}})</p>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="{{ route('areas.index') }}">Regresar</a>
+            @auth
+            <div class="btn-group">
+                <a class="btn btn-primary" href="{{ route('areas.edit', $gerencia) }}">Editar</a>
+                <a class="btn btn-danger" href="#"
+                    onclick="document.getElementById('delete-gerencia').submit()">Eliminar</a>
+            </div>
+            <form class="d-none" id="delete-gerencia" action="{{ route('areas.destroy', $gerencia) }}"
+                method="post">
+                @csrf @method('DELETE')
+            </form>
+            @endauth
+        </div>
+    </div>
+</div>
+@endsection
