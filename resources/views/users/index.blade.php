@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Usuarios')
-
 @section('content')
 
-
-
+    <div class="container mt-5">
+        {{$dataTable->table(['class' => 'table table-sm table-hover display responsive nowrap'])}}
+    </div>
 @endsection
+
+@push('scripts')
+    {{$dataTable->scripts()}}
+@endpush

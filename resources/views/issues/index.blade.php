@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="container mt-5">
-        {{$dataTable->table(['class' => 'table table-sm table-hover'])}}
+        {{$dataTable->table(['class' => 'table table-sm table-hover display responsive nowrap'])}}
     </div>
 @endsection
 

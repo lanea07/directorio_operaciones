@@ -106,6 +106,7 @@ class DirectorioDataTable extends DataTable
                                 }
                             );
                         }",
+                        'responsive' => true,
                     ])
                     // ->buttons(
                     //     Button::make('create'),

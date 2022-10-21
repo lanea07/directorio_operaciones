@@ -25,7 +25,7 @@ class UsersController extends Controller
      */
     public function index(UsersDataTable $dataTable)
     {
-        return $dataTable->render("directorios.index");
+        return $dataTable->render("users.index");
     }
 
     /**

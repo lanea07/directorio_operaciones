@@ -82,6 +82,7 @@ class DependenciaDataTable extends DataTable
                                 }
                             );
                         }",
+                        'responsive' => true,
                     ])
                     // ->buttons(
                     //     Button::make('create'),

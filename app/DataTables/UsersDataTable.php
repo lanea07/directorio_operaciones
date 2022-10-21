@@ -108,6 +108,7 @@ class UsersDataTable extends DataTable
                                 }
                             );
                         }",
+                        'responsive' => true,
                     ])
                     // ->buttons(
                     //     Button::make('create'),

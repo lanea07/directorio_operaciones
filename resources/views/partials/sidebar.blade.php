@@ -1,11 +1,17 @@
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
         <div class="offcanvas-header">
             <div id="sidebarHeader" class="row d-flex justify-content-around p-3">
-                <button type="button" id="homeLogo" class="btn bg-transparent d-sm-block border border-secondary py-3">
-                    <a class="d-sm-block" href="">
-                        <img src="/img/logo_banner.png" height="35" class="d-inline-block" alt="">
-                    </a>
-                </button>
+                <div class="row d-flex flex-row-reverse mb-4 row">
+                    <button type="button" class="btn-close text-reset text-bg-light" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+
+                <div class="row">
+                    <button type="button" id="homeLogo" class="btn bg-transparent d-sm-block border border-secondary py-3">
+                        <a class="d-sm-block" href="">
+                            <img src="/img/logo_banner.png" height="20" class="d-inline-block" alt="">
+                        </a>
+                    </button>
+                </div>
             </div>
         </div>
 
