@@ -15,10 +15,14 @@ return new class extends Migration
     {
         Schema::create('issues', function (Blueprint $table) {
             $table->id();
-            $table->integer('directorio_id');
+
             $table->text('ip_issue_sender');
             $table->text('text');
             $table->timestamps();
+        });
+
+        Schema::table('issues', function(Blueprint $table){
+            $table->foreignId('directorio_id')->constrained()->onUpdate('cascade')->onDelete('restrict');;
         });
     }
 

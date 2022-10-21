@@ -15,13 +15,17 @@ return new class extends Migration
     {
         Schema::create('directorios', function (Blueprint $table) {
             $table->id();
-            $table->integer('dependencia_id');
-            $table->integer('area_id');
+
             $table->text('usuario_de_red');
             $table->text('nombre');
             $table->text('correo');
             $table->text('extension');
             $table->timestamps();
+        });
+
+        Schema::table('directorios', function(Blueprint $table){
+            $table->foreignId('dependencia_id')->constrained()->onUpdate('cascade')->onDelete('restrict');;
+            $table->foreignId('area_id')->constrained()->onUpdate('cascade')->onDelete('restrict');;
         });
     }
 

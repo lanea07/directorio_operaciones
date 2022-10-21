@@ -16,8 +16,12 @@ return new class extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table->text('nombre');
-            $table->integer('gerencia_id');
+
             $table->timestamps();
+        });
+
+        Schema::table('areas', function(Blueprint $table){
+            $table->foreignId('gerencia_id')->constrained()->onUpdate('cascade')->onDelete('restrict');;
         });
     }
 
