@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -15,10 +16,12 @@ return new class extends Migration
     {
         Schema::create('dependencias', function (Blueprint $table) {
             $table->id();
-            $table->text('nombre');
-            $table->text('direccion');
-            $table->text('telefono');
-            $table->timestamps();
+            $table->string('nombre', 150);
+            $table->string('direccion', 150);
+            $table->string('telefono', 15);
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->index(['nombre', 'direccion']);
         });
     }
 

@@ -6,13 +6,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
 
-                <li class="nav-item">
-                    <button class="btn btn-dark d-sm-block border border-secondary" type="button" id="sidebarCollapse" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                        <a class="d-md-block">
-                            <img src="/img/logo_banner.png" class="d-inline-block" alt="">
-                        </a>
-                    </button>
-                </li>
+                @if (auth()->check())
+                    <li class="nav-item">
+                        <button class="btn btn-dark d-sm-block border border-secondary" type="button" id="sidebarCollapse" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                            <a class="d-md-block">
+                                <img src="/img/logo_banner.png" class="d-inline-block" alt="">
+                            </a>
+                        </button>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link ml-2 {{ setActive('/')}}" href="/">Inicio</a>
                 </li>

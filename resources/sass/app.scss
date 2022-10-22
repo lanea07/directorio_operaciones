@@ -3,3 +3,21 @@
 
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
+
+.h-screen {
+    height: 100vh;
+}
+
+tr td div div{
+    margin-right: .5rem;
+    opacity: 0;
+    transition: opacity .2s ease-out;
+    cursor: pointer;
+    transition-delay: 0s;
+  }
+  tr:hover td div div{
+    opacity: 1;
+    transition-delay: 0s;
+  }
+
+

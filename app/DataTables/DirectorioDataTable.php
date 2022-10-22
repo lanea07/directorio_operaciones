@@ -25,29 +25,38 @@ class DirectorioDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', '')
+            // ->addColumn('action', '')
             ->addColumn('nombre', function(Directorio $directorio){
-                return '<a href="'.route('directorios.show', $directorio->id).'" class="link-primary">'.$directorio->nombre.'</a>';
+                return
+                        Auth::check() && auth()->user()->hasRoles(['administrador']) ?
+                        '<div class="d-flex">'.
+                            '<a href="'.route('directorios.show', $directorio->id).'" class="link-primary me-auto">'.$directorio->nombre.'</a>'.
+                            '<div>'.
+                                '<a class="mx-1" href="'.route('directorios.edit', $directorio->id).'" title="Editar"><i class="fa-solid fa-pen text-primary"></i></a>'.
+                                '<a class="mx-1" href="'.route('issues.create', ['directorio_id' => $directorio->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                                '<a class="mx-1" href="#" onclick="document.getElementById(\'delete-user-'.$directorio->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can text-danger"></i></a>'.
+                            '</div>'.
+                        '</div>'.
+                        '<form class="d-none" id="delete-user-'.$directorio->id.'" action="'.route('directorios.destroy', $directorio->id).'" method="post">'.
+                            method_field('delete').
+                            csrf_field().
+                        '</form>'  :
+                        '<div class="d-flex">'.
+                            '<a href="'.route('directorios.show', $directorio->id).'" class="link-primary me-auto">'.$directorio->nombre.'</a>'.
+                            '<div>'.
+                                '<a class="mx-1" href="'.route('issues.create', ['directorio_id' => $directorio->id]).'"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                            '</div>'.
+                        '</div>'
+                        ;
             })
             ->addColumn('correo', function(Directorio $directorio){
                 return '<a href="mailto:'.$directorio->correo.'" class="link-primary">'.$directorio->correo.'</a>';
             })
-            ->addColumn('Acciones', function(Directorio $directorio){
-                return
-                    Auth::check() && auth()->user()->hasRoles(['administrador']) ?
-                    '<div class="btn-group d-none">'.
-                        '<a class="btn btn-outline-primary btn-sm" href="'.route('directorios.edit', $directorio->id).'">Editar</a>'.
-                        '<a class="btn btn-outline-warning btn-sm" href="'.route('issues.create', ['directorio_id' => $directorio->id]).'">Reportar Novedad</a>'.
-                        '<a class="btn btn-outline-danger btn-sm" href="#" onclick="document.getElementById(\'delete-user-'.$directorio->id.'\').submit()">Eliminar</a>'.
-                    '</div>'.
-                    '<form class="d-none" id="delete-user-'.$directorio->id.'" action="'.route('directorios.destroy', $directorio->id).'" method="post">'.
-                        method_field('delete').
-                        csrf_field().
-                    '</form>' :
-                    '<div class="btn-group d-none">'.
-                        '<a class="btn btn-outline-warning btn-sm" href="'.route('issues.create', ['directorio_id' => $directorio->id]).'">Reportar Novedad</a>'.
-                    '</div>'
-                    ;
+            ->addColumn('area', function(Directorio $directorio){
+                return '<a href="'.route('areas.show', $directorio->area->id).'" class="link-primary">'.$directorio->area->nombre.'</a>';
+            })
+            ->addColumn('dependencia', function(Directorio $directorio){
+                return '<a href="'.route('dependencias.show', $directorio->dependencia->id).'" class="link-primary">'.$directorio->dependencia->nombre.'</a>';
             })
             ->filter(function($query){
                 $request = request()->query('search');
@@ -63,7 +72,7 @@ class DirectorioDataTable extends DataTable
                     });
                 };
             })
-            ->rawColumns(['nombre','correo','Acciones']);
+            ->rawColumns(['nombre','correo','area','dependencia','Acciones']);
     }
 
     /**
@@ -75,11 +84,11 @@ class DirectorioDataTable extends DataTable
     public function query(Directorio $model)
     {
         return $model
-            ->with(['dependencia','area'])
-            ->select('directorios.*')
-            ->newQuery()
-            ->orderBy('nombre', 'asc')
-            ;
+                ->newQuery()
+                ->select('directorios.*')
+                ->with(['dependencia','area'])
+                ->orderBy('nombre', 'asc')
+                ;
     }
 
     /**
@@ -93,29 +102,18 @@ class DirectorioDataTable extends DataTable
                     ->setTableId('directorio-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('lfrtip')
-                    ->orderBy(1, 'asc')
+                    ->dom('Blfrtip')
+                    ->orderBy(0, 'asc')
                     ->parameters([
-                        'drawCallback' => "function() {
-                            $('#directorio-table > tbody > tr').hover(
-                                function(){
-                                    $(this).find('div.btn-group').removeClass('d-none');
-                                },
-                                function(){
-                                    $(this).find('div.btn-group').addClass('d-none');
-                                }
-                            );
-                        }",
                         'responsive' => true,
-                    ])
-                    // ->buttons(
-                    //     Button::make('create'),
-                    //     Button::make('export'),
-                    //     Button::make('print'),
-                    //     Button::make('reset'),
-                    //     Button::make('reload')
-                    // );
-                    ;
+                        'buttons' => [
+                            [
+                                'extend' => 'excel',
+                                'text' => '<i class="fas fa-file-excel fa-lg"></i><span class="ml-2">A Excel</span>',
+                                'className' => 'btn btn-sm btn-success m-2',
+                            ]
+                        ],
+                    ]);
     }
 
     /**
@@ -126,15 +124,17 @@ class DirectorioDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('dt-control'),
+            // Column::computed('action')
+            //       ->exportable(false)
+            //       ->printable(false)
+            //       ->width(60)
+            //       ->addClass('dt-control'),
             Column::make('nombre'),
             Column::make('usuario_de_red'),
+            Column::make('area'),
+            Column::make('dependencia'),
             Column::make('correo'),
-            Column::make('Acciones'),
+            // Column::make('Acciones'),
         ];
     }
 

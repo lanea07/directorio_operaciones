@@ -25,7 +25,27 @@ class UsersDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('Usuario', function(User $user){
-                return '<a href="'.route('users.show', $user->id).'" class="link-primary">'.$user->name.'</a>';
+                return
+                    Auth::check() && auth()->user()->hasRoles(['administrador']) ?
+                    '<div class="d-flex">'.
+                        '<a href="'.route('users.show', $user->id).'" class="link-primary me-auto">'.$user->name.'</a>'.
+                        '<div>'.
+                            '<a class="mx-1" href="'.route('users.edit', $user->id).'" title="Editar"><i class="fa-solid fa-pen text-primary"></i></a>'.
+                            '<a class="mx-1" href="'.route('issues.create', ['user_id' => $user->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                            '<a class="mx-1" href="#" onclick="document.getElementById(\'delete-user-'.$user->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can text-danger"></i></a>'.
+                        '</div>'.
+                    '</div>'.
+                    '<form class="d-none" id="delete-user-'.$user->id.'" action="'.route('users.destroy', $user->id).'" method="post">'.
+                        method_field('delete').
+                        csrf_field().
+                    '</form>'  :
+                    '<div class="d-flex">'.
+                        '<a href="'.route('users.show', $user->id).'" class="link-primary me-auto">'.$user->name.'</a>'.
+                        '<div>'.
+                            '<a class="mx-1" href="'.route('issues.create', ['user_id' => $user->id]).'"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                        '</div>'.
+                    '</div>'
+                    ;
             })
             ->addColumn('email', function(User $user){
                 return '<a href=mailto:'.$user->email.' class="link-primary">'.$user->email.'</a>';
@@ -38,22 +58,6 @@ class UsersDataTable extends DataTable
             })
             ->addColumn('updated_at', function(User $user){
                 return $user->updated_at->diffForHumans();
-            })
-            ->addColumn('Acciones', function(User $user){
-                return
-                    $user->id <> 1 ?
-                    '<div class="btn-group d-none">'.
-                        '<a class="btn btn-outline-primary btn-sm" href="'.route('users.edit', $user->id).'">Editar</a>'.
-                        '<a class="btn btn-outline-danger btn-sm" href="#" onclick="document.getElementById(\'delete-user-'.$user->id.'\').submit()">Eliminar</a>'.
-                    '</div>'.
-                    '<form class="d-none" id="delete-user-'.$user->id.'" action="'.route('users.destroy', $user->id).'" method="post">'.
-                        method_field('delete').
-                        csrf_field().
-                    '</form>' :
-                        '<div class="btn-group d-none">'.
-                        '<a class="btn btn-outline-primary btn-sm" href="'.route('users.edit', $user->id).'">Editar</a>'.
-                    '</div>'
-                    ;
             })
             ->filter(function($query){
                 $request = request()->query('search');
@@ -78,10 +82,11 @@ class UsersDataTable extends DataTable
     public function query(User $model): QueryBuilder
     {
         return $model
-        ->with(['roles'])
-        ->select('users.*')
-        ->newQuery()
-        ;
+                ->newQuery()
+                ->select('users.*')
+                ->with(['roles'])
+                ->orderBy('name', 'asc')
+                ;
     }
 
     /**
@@ -95,29 +100,18 @@ class UsersDataTable extends DataTable
                     ->setTableId('usersdatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('lfrtip')
+                    ->dom('Blfrtip')
                     ->orderBy(1, 'asc')
                     ->parameters([
-                        'drawCallback' => "function() {
-                            $('#usersdatatable-table > tbody > tr').hover(
-                                function(){
-                                    $(this).find('div.btn-group').removeClass('d-none');
-                                },
-                                function(){
-                                    $(this).find('div.btn-group').addClass('d-none');
-                                }
-                            );
-                        }",
                         'responsive' => true,
-                    ])
-                    // ->buttons(
-                    //     Button::make('create'),
-                    //     Button::make('export'),
-                    //     Button::make('print'),
-                    //     Button::make('reset'),
-                    //     Button::make('reload')
-                    // );
-                    ;
+                        'buttons' => [
+                            [
+                                'extend' => 'excelHtml5',
+                                'className' => 'btn btn-sm btn-success m-2',
+                                'text' => '<i class="fas fa-file-excel fa-lg"></i><span class="ml-2">A Excel</span>',
+                            ]
+                        ],
+                    ]);
     }
 
     /**
@@ -133,7 +127,6 @@ class UsersDataTable extends DataTable
             Column::make('Permisos'),
             Column::make('created_at'),
             Column::make('updated_at'),
-            Column::make('Acciones'),
         ];
     }
 

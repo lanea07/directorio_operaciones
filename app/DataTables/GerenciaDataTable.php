@@ -26,25 +26,29 @@ class GerenciaDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', '')
             ->addColumn('nombre', function(Gerencia $gerencia){
-                return '<a href="'.route('gerencias.show', $gerencia->id).'" class="link-primary">'.$gerencia->nombre.'</a>';
-            })
-            ->addColumn('Acciones', function(Gerencia $gerencia){
                 return
                     Auth::check() && auth()->user()->hasRoles(['administrador']) ?
-                    '<div class="btn-group d-none">'.
-                        '<a class="btn btn-primary btn-sm" href="'.route('gerencias.edit', $gerencia->id).'">Editar</a>'.
-                        '<a class="btn btn-outline-danger btn-sm" href="#" onclick="document.getElementById(\'delete-user-'.$gerencia->id.'\').submit()">Eliminar</a>'.
+                    '<div class="d-flex">'.
+                    '<a href="'.route('gerencias.show', $gerencia->id).'" class="link-primary me-auto">'.$gerencia->nombre.'</a>'.
+                        '<div>'.
+                            '<a class="mx-1" href="'.route('gerencias.edit', $gerencia->id).'" title="Editar"><i class="fa-solid fa-pen text-primary"></i></a>'.
+                            '<a class="mx-1" href="'.route('issues.create', ['gerencia_id' => $gerencia->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                            '<a class="mx-1" href="#" onclick="document.getElementById(\'delete-user-'.$gerencia->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can text-danger"></i></a>'.
+                        '</div>'.
                     '</div>'.
                     '<form class="d-none" id="delete-user-'.$gerencia->id.'" action="'.route('gerencias.destroy', $gerencia->id).'" method="post">'.
                         method_field('delete').
                         csrf_field().
-                    '</form>' :
-                    '<div class="btn-group d-none">'.
-                        '<a class="btn btn-success btn-sm" href="'.route('login').'">Iniciar Sesión</a>'.
+                    '</form>'  :
+                    '<div class="d-flex">'.
+                    '<a href="'.route('gerencias.show', $gerencia->id).'" class="link-primary">'.$gerencia->nombre.'</a>'.
+                        '<div>'.
+                            '<a class="mx-1" href="'.route('issues.create', ['gerencia_id' => $gerencia->id]).'"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                        '</div>'.
                     '</div>'
                     ;
             })
-            ->rawColumns(['nombre','Acciones']);
+            ->rawColumns(['nombre']);
     }
 
     /**
@@ -55,7 +59,10 @@ class GerenciaDataTable extends DataTable
      */
     public function query(Gerencia $model): QueryBuilder
     {
-        return $model->newQuery()->orderBy('nombre', 'asc');
+        return $model
+                ->newQuery()
+                ->orderBy('nombre', 'asc')
+                ;
     }
 
     /**
@@ -69,29 +76,18 @@ class GerenciaDataTable extends DataTable
                     ->setTableId('gerenciadatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('lfrtip')
+                    ->dom('Blfrtip')
                     ->orderBy(0, 'asc')
-                                        ->parameters([
-                        'initComplete' => "function() {
-                            $('#gerenciadatatable-table > tbody > tr').hover(
-                                function(){
-                                    $(this).find('div.btn-group').removeClass('d-none');
-                                },
-                                function(){
-                                    $(this).find('div.btn-group').addClass('d-none');
-                                }
-                            );
-                        }",
+                    ->parameters([
                         'responsive' => true,
-                    ])
-                    // ->buttons(
-                    //     Button::make('create'),
-                    //     Button::make('export'),
-                    //     Button::make('print'),
-                    //     Button::make('reset'),
-                    //     Button::make('reload')
-                    // );
-                    ;
+                        'buttons' => [
+                            [
+                                'extend' => 'excelHtml5',
+                                'className' => 'btn btn-sm btn-success m-2',
+                                'text' => '<i class="fas fa-file-excel fa-lg"></i><span class="ml-2">A Excel</span>',
+                            ]
+                        ],
+                    ]);
     }
 
     /**
@@ -103,7 +99,6 @@ class GerenciaDataTable extends DataTable
     {
         return [
             Column::make('nombre'),
-            Column::make('Acciones'),
         ];
     }
 

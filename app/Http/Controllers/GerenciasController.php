@@ -100,8 +100,12 @@ class GerenciasController extends Controller
      */
     public function destroy(Gerencia $gerencia)
     {
-        $this->authorize('destroy', $gerencia);
-        $gerencia->delete();
-        return redirect()->route('gerencias.index')->with('status', 'Entrada eliminada con éxito.');
+        try {
+            $this->authorize('destroy', $gerencia);
+            $gerencia->delete();
+            return redirect()->route('gerencias.index')->with('status', 'Entrada eliminada con éxito.');
+        } catch (\Throwable $th) {
+            return redirect()->route('gerencias.index')->with('status', $th->getMessage());
+        }
     }
 }

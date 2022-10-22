@@ -105,8 +105,13 @@ class AreasController extends Controller
      */
     public function destroy(Area $area)
     {
-        $this->authorize('destroy', $area);
-        $area->delete();
-        return redirect()->route('areas.index')->with('status', 'Entrada eliminada con éxito.');
+        try {
+            $this->authorize('destroy', $area);
+            $area->delete();
+            return redirect()->route('areas.index')->with('status', 'Entrada eliminada con éxito.');
+        } catch (\Throwable $th) {
+            return redirect()->route('areas.index')->with('status', $th->getMessage());
+        }
+
     }
 }

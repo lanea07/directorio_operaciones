@@ -26,26 +26,30 @@ class AreaDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', '')
             ->addColumn('nombre', function(Area $area){
-                return '<a href="'.route('areas.show', $area->id).'" class="link-primary">'.$area->nombre.'</a>';
+                return
+                        Auth::check() && auth()->user()->hasRoles(['administrador']) ?
+                        '<div class="d-flex">'.
+                            '<a href="'.route('areas.show', $area->id).'" class="link-primary me-auto">'.$area->nombre.'</a>'.
+                            '<div>'.
+                                '<a class="mx-1" href="'.route('areas.edit', $area->id).'" title="Editar"><i class="fa-solid fa-pen text-primary"></i></a>'.
+                                '<a class="mx-1" href="'.route('issues.create', ['area_id' => $area->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                                '<a class="mx-1" href="#" onclick="document.getElementById(\'delete-user-'.$area->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can text-danger"></i></a>'.
+                            '</div>'.
+                        '</div>'.
+                        '<form class="d-none" id="delete-user-'.$area->id.'" action="'.route('areas.destroy', $area->id).'" method="post">'.
+                            method_field('delete').
+                            csrf_field().
+                        '</form>'  :
+                        '<div class="d-flex">'.
+                            '<a href="'.route('areas.show', $area->id).'" class="link-primary me-auto">'.$area->nombre.'</a>'.
+                            '<div>'.
+                                '<a class="mx-1" href="'.route('issues.create', ['area_id' => $area->id]).'"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                            '</div>'.
+                        '</div>'
+                        ;
             })
             ->addColumn('Gerencia', function(Area $area){
                 return '<a href="'.route('gerencias.show', $area->gerencia->id).'" class="link-primary">'.$area->gerencia->nombre.'</a>';
-            })
-            ->addColumn('Acciones', function(Area $area){
-                return
-                    Auth::check() && auth()->user()->hasRoles(['administrador']) ?
-                    '<div class="btn-group d-none">'.
-                        '<a class="btn btn-primary btn-sm" href="'.route('areas.edit', $area->id).'">Editar</a>'.
-                        '<a class="btn btn-outline-danger btn-sm" href="#" onclick="document.getElementById(\'delete-user-'.$area->id.'\').submit()">Eliminar</a>'.
-                    '</div>'.
-                    '<form class="d-none" id="delete-user-'.$area->id.'" action="'.route('areas.destroy', $area->id).'" method="post">'.
-                        method_field('delete').
-                        csrf_field().
-                    '</form>' :
-                    '<div class="btn-group d-none">'.
-                        '<a class="btn btn-success btn-sm" href="'.route('login').'">Iniciar Sesión</a>'.
-                    '</div>'
-                    ;
             })
             ->rawColumns(['nombre','Gerencia','Acciones']);
     }
@@ -58,7 +62,12 @@ class AreaDataTable extends DataTable
      */
     public function query(Area $model): QueryBuilder
     {
-        return $model->with(['gerencia'])->newQuery()->orderBy('nombre', 'asc');
+        return $model
+                ->newQuery()
+                ->select('areas.*')
+                ->with(['gerencia'])
+                ->orderBy('nombre', 'asc')
+                ;
     }
 
     /**
@@ -72,29 +81,18 @@ class AreaDataTable extends DataTable
                     ->setTableId('areadatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('lfrtip')
+                    ->dom('Blfrtip')
                     ->orderBy(0, 'asc')
                     ->parameters([
-                        'initComplete' => "function() {
-                            $('#areadatatable-table > tbody > tr').hover(
-                                function(){
-                                    $(this).find('div.btn-group').removeClass('d-none');
-                                },
-                                function(){
-                                    $(this).find('div.btn-group').addClass('d-none');
-                                }
-                            );
-                        }",
                         'responsive' => true,
-                    ])
-                    // ->buttons(
-                    //     Button::make('create'),
-                    //     Button::make('export'),
-                    //     Button::make('print'),
-                    //     Button::make('reset'),
-                    //     Button::make('reload')
-                    // );
-                    ;
+                        'buttons' => [
+                            [
+                                'extend' => 'excelHtml5',
+                                'className' => 'btn btn-sm btn-success m-2',
+                                'text' => '<i class="fas fa-file-excel fa-lg"></i><span class="ml-2">A Excel</span>',
+                            ]
+                        ],
+                    ]);
     }
 
     /**
@@ -106,9 +104,7 @@ class AreaDataTable extends DataTable
     {
         return [
             Column::make('nombre'),
-            Column::make('Gerencia')
-                ->searchable(true),
-            Column::make('Acciones'),
+            Column::make('Gerencia'),
         ];
     }
 

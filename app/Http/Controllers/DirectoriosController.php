@@ -120,8 +120,12 @@ class DirectoriosController extends Controller
      */
     public function destroy(Directorio $directorio)
     {
-        $this->authorize('destroy', $directorio);
-        $directorio->delete();
-        return redirect()->route('directorios.index')->with('status', 'Entrada eliminada con éxito.');
+        try {
+            $this->authorize('destroy', $directorio);
+            $directorio->delete();
+            return redirect()->route('directorios.index')->with('status', 'Entrada eliminada con éxito.');
+        } catch (\Throwable $th) {
+            return redirect()->route('directorios.index')->with('status', $th->getMessage());
+        }
     }
 }

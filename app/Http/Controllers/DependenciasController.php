@@ -99,8 +99,12 @@ class DependenciasController extends Controller
      */
     public function destroy(Dependencia $dependencia)
     {
-        $this->authorize('destroy', $dependencia);
-        $dependencia->delete();
-        return redirect()->route('dependencias.index')->with('status', 'Entrada eliminada con éxito.');
+        try {
+            $this->authorize('destroy', $dependencia);
+            $dependencia->delete();
+            return redirect()->route('dependencias.index')->with('status', 'Entrada eliminada con éxito.');
+        } catch (\Throwable $th) {
+            return redirect()->route('dependencias.index')->with('status', $th->getMessage());
+        }
     }
 }

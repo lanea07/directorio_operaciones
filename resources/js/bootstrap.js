@@ -2,6 +2,7 @@ import _ from 'lodash';
 window._ = _;
 
 import 'bootstrap';
+import '../../vendor/yajra/laravel-datatables-buttons/src/resources/assets/buttons.server-side'
 
 
 /**

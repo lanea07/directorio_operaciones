@@ -198,6 +198,8 @@ return [
         App\Providers\JetstreamServiceProvider::class,
 
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class,
+
 
     ],
 

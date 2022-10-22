@@ -24,6 +24,12 @@ function format(d) {
 
 
 $(document).ready(function(){
+
+    $('#directorio-table').on('requestChild.dt', function(e, row) {
+        row.child(format(row.data())).show();
+    });
+
+
     $('#directorio-table tbody').on('click', 'td.dt-control', function () {
         var tr = $(this).closest('tr');
         var row = $('#directorio-table').DataTable().row( tr );
@@ -35,7 +41,7 @@ $(document).ready(function(){
         }
         else {
             // Open this row
-            row.child( format(row.data()) ).show();
+            row.child( template(row.data()) ).show();
             tr.addClass('shown');
         }
     });
@@ -138,13 +144,14 @@ $(document).ready(function(){
         },
     });
 
-    $(document).click(function (event) {
+    $(document).click(function (e) {
         var clickover = $(event.target);
-        var _opened = $(".navbar-collapse").hasClass("show");
-        if (_opened === true && !clickover.hasClass("navbar-toggle")) {
-            $('.navbar-collapse').collapse('hide');
+        var _opened = $(".navbar-collapse").hasClass("navbar-collapse");
+        if (_opened === true && !clickover.hasClass("navbar-toggle") && clickover.parents('.navbar-collapse').length == 0) {
+            $(".navbar-collapse").collapse('hide');
         }
     });
+
     // $('#notifyContainer > a').on('click', ()=>{
     //     var data = new FormData()
     //     $.ajax({

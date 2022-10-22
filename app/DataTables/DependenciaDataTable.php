@@ -26,25 +26,29 @@ class DependenciaDataTable extends DataTable
         return (new EloquentDataTable($query))
         ->addColumn('action', '')
         ->addColumn('nombre', function(Dependencia $dependencia){
-            return '<a href="'.route('dependencias.show', $dependencia->id).'" class="link-primary">'.$dependencia->nombre.'</a>';
-        })
-        ->addColumn('Acciones', function(Dependencia $dependencia){
             return
                 Auth::check() && auth()->user()->hasRoles(['administrador']) ?
-                '<div class="btn-group d-none">'.
-                    '<a class="btn btn-primary btn-sm" href="'.route('dependencias.edit', $dependencia->id).'">Editar</a>'.
-                    '<a class="btn btn-outline-danger btn-sm" href="#" onclick="document.getElementById(\'delete-user-'.$dependencia->id.'\').submit()">Eliminar</a>'.
+                '<div class="d-flex">'.
+                '<a href="'.route('dependencias.show', $dependencia->id).'" class="link-primary me-auto">'.$dependencia->nombre.'</a>'.
+                    '<div>'.
+                        '<a class="mx-1" href="'.route('dependencias.edit', $dependencia->id).'" title="Editar"><i class="fa-solid fa-pen text-primary"></i></a>'.
+                        '<a class="mx-1" href="'.route('issues.create', ['dependencia_id' => $dependencia->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                        '<a class="mx-1" href="#" onclick="document.getElementById(\'delete-user-'.$dependencia->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can text-danger"></i></a>'.
+                    '</div>'.
                 '</div>'.
                 '<form class="d-none" id="delete-user-'.$dependencia->id.'" action="'.route('dependencias.destroy', $dependencia->id).'" method="post">'.
                     method_field('delete').
                     csrf_field().
-                '</form>' :
-                '<div class="btn-group d-none">'.
-                    '<a class="btn btn-success btn-sm" href="'.route('login').'">Iniciar Sesión</a>'.
+                '</form>'  :
+                '<div class="d-flex">'.
+                '<a href="'.route('dependencias.show', $dependencia->id).'" class="link-primary me-auto">'.$dependencia->nombre.'</a>'.
+                    '<div>'.
+                        '<a class="mx-1" href="'.route('issues.create', ['dependencia_id' => $dependencia->id]).'"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                    '</div>'.
                 '</div>'
                 ;
         })
-        ->rawColumns(['nombre','Acciones']);
+        ->rawColumns(['nombre']);
     }
 
     /**
@@ -55,7 +59,10 @@ class DependenciaDataTable extends DataTable
      */
     public function query(Dependencia $model): QueryBuilder
     {
-        return $model->newQuery()->orderBy('nombre', 'asc');
+        return $model
+                ->newQuery()
+                ->orderBy('nombre', 'asc')
+                ;
     }
 
     /**
@@ -69,29 +76,18 @@ class DependenciaDataTable extends DataTable
                     ->setTableId('dependenciadatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('lfrtip')
+                    ->dom('Blfrtip')
                     ->orderBy(1, 'asc')
                     ->parameters([
-                        'initComplete' => "function() {
-                            $('#dependenciadatatable-table > tbody > tr').hover(
-                                function(){
-                                    $(this).find('div.btn-group').removeClass('d-none');
-                                },
-                                function(){
-                                    $(this).find('div.btn-group').addClass('d-none');
-                                }
-                            );
-                        }",
                         'responsive' => true,
-                    ])
-                    // ->buttons(
-                    //     Button::make('create'),
-                    //     Button::make('export'),
-                    //     Button::make('print'),
-                    //     Button::make('reset'),
-                    //     Button::make('reload')
-                    // );
-                    ;
+                        'buttons' => [
+                            [
+                                'extend' => 'excelHtml5',
+                                'className' => 'btn btn-sm btn-success m-2',
+                                'text' => '<i class="fas fa-file-excel fa-lg"></i><span class="ml-2">A Excel</span>',
+                            ]
+                        ],
+                    ]);
     }
 
     /**
@@ -105,7 +101,6 @@ class DependenciaDataTable extends DataTable
             Column::make('nombre'),
             Column::make('direccion'),
             Column::make('telefono'),
-            Column::make('Acciones'),
         ];
     }
 

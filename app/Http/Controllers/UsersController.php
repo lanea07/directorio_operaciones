@@ -112,9 +112,13 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->authorize('destroy', $user);
-        $user->roles()->detach();
-        $user->delete();
-        return redirect()->route('users.index')->with('status', 'Entrada eliminada con éxito.');
+        try {
+            $this->authorize('destroy', $user);
+            $user->roles()->detach();
+            $user->delete();
+            return redirect()->route('users.index')->with('status', 'Entrada eliminada con éxito.');
+        } catch (\Throwable $th) {
+            return redirect()->route('users.index')->with('status', $th->getMessage());
+        }
     }
 }
