@@ -75,6 +75,9 @@ $(document).ready(function(){
     $(".dataTable > thead").addClass('table-dark');
 
     $("#notifyContainer > a").on('click', function(){
+
+        new Notification('ToDo List');
+
         Push.create("Hello world!", {
             body: "How's it hangin'?",
             icon: '/icon.png',
