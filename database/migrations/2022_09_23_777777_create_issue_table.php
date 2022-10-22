@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('ip_issue_sender');
             $table->text('text');
             $table->foreignId('directorio_id')->constrained()->onUpdate('cascade')->onDelete('restrict');
+            $table->integer('valid_id')->default(1);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

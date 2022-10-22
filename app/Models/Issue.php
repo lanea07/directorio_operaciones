@@ -13,6 +13,7 @@ class Issue extends Model
         'directorio_id',
         'text',
         'ip_issue_sender',
+        'valid_id',
     ];
 
 

@@ -31,9 +31,9 @@ class GerenciaDataTable extends DataTable
                     '<div class="d-flex">'.
                     '<a href="'.route('gerencias.show', $gerencia->id).'" class="link-primary me-auto">'.$gerencia->nombre.'</a>'.
                         '<div>'.
-                            '<a class="mx-1" href="'.route('gerencias.edit', $gerencia->id).'" title="Editar"><i class="fa-solid fa-pen text-primary"></i></a>'.
-                            '<a class="mx-1" href="'.route('issues.create', ['gerencia_id' => $gerencia->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
-                            '<a class="mx-1" href="#" onclick="document.getElementById(\'delete-user-'.$gerencia->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can text-danger"></i></a>'.
+                            '<a class="mx-1 link-primary" href="'.route('gerencias.edit', $gerencia->id).'" title="Editar"><i class="fa-solid fa-pen "></i></a>'.
+                            '<a class="mx-1 link-warning" href="'.route('issues.create', ['gerencia_id' => $gerencia->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus "></i></a>'.
+                            '<a class="mx-1 link-danger" href="#" onclick="document.getElementById(\'delete-user-'.$gerencia->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can "></i></a>'.
                         '</div>'.
                     '</div>'.
                     '<form class="d-none" id="delete-user-'.$gerencia->id.'" action="'.route('gerencias.destroy', $gerencia->id).'" method="post">'.
@@ -43,7 +43,7 @@ class GerenciaDataTable extends DataTable
                     '<div class="d-flex">'.
                     '<a href="'.route('gerencias.show', $gerencia->id).'" class="link-primary">'.$gerencia->nombre.'</a>'.
                         '<div>'.
-                            '<a class="mx-1" href="'.route('issues.create', ['gerencia_id' => $gerencia->id]).'"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                            '<a class="mx-1 link-warning" href="'.route('issues.create', ['gerencia_id' => $gerencia->id]).'"><i class="fa-solid fa-file-circle-plus "></i></a>'.
                         '</div>'.
                     '</div>'
                     ;

@@ -31,9 +31,9 @@ class AreaDataTable extends DataTable
                         '<div class="d-flex">'.
                             '<a href="'.route('areas.show', $area->id).'" class="link-primary me-auto">'.$area->nombre.'</a>'.
                             '<div>'.
-                                '<a class="mx-1" href="'.route('areas.edit', $area->id).'" title="Editar"><i class="fa-solid fa-pen text-primary"></i></a>'.
-                                '<a class="mx-1" href="'.route('issues.create', ['area_id' => $area->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
-                                '<a class="mx-1" href="#" onclick="document.getElementById(\'delete-user-'.$area->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can text-danger"></i></a>'.
+                                '<a class="mx-1 link-primary" href="'.route('areas.edit', $area->id).'" title="Editar"><i class="fa-solid fa-pen"></i></a>'.
+                                '<a class="mx-1 link-warning" href="'.route('issues.create', ['area_id' => $area->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus"></i></a>'.
+                                '<a class="mx-1 link-danger" href="#" onclick="document.getElementById(\'delete-user-'.$area->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can"></i></a>'.
                             '</div>'.
                         '</div>'.
                         '<form class="d-none" id="delete-user-'.$area->id.'" action="'.route('areas.destroy', $area->id).'" method="post">'.
@@ -43,7 +43,7 @@ class AreaDataTable extends DataTable
                         '<div class="d-flex">'.
                             '<a href="'.route('areas.show', $area->id).'" class="link-primary me-auto">'.$area->nombre.'</a>'.
                             '<div>'.
-                                '<a class="mx-1" href="'.route('issues.create', ['area_id' => $area->id]).'"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                                '<a class="mx-1 link-warning" href="'.route('issues.create', ['area_id' => $area->id]).'"><i class="fa-solid fa-file-circle-plus "></i></a>'.
                             '</div>'.
                         '</div>'
                         ;

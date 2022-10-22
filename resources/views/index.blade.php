@@ -4,14 +4,11 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-12 col-lg-6">
-            <h1 class="display-4 text-secondary">Directorio</h1>
-            <p class="lead text-muted">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate quis velit consequuntur maxime nostrum obcaecati error tenetur, nam id molestiae accusamus saepe blanditiis pariatur itaque sequi architecto, placeat et ex.
-            </p>
+        <div class="col-12 col-lg-6 d-flex flex-column justify-content-center">
+            <h1 class="display-4 text-secondary">Directorio Operaciones</h1>
         </div>
         <div class="col-12 col-lg-6">
-            <img class="img-fluid mx-auto" src="/img/main_contacts.svg" alt="" style="height: 260px">
+            <img class="img-fluid mx-auto" src="/img/main_contacts.svg" alt="">
         </div>
     </div>
 </div>

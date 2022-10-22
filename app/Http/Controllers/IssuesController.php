@@ -52,7 +52,7 @@ class IssuesController extends Controller
     {
         $issue = $request->validated();
         $issue = Issue::create($issue);
-        $issueCount = Issue::all()->count();
+        $issueCount = Issue::all()->where('valid_id', 1)->count();
         broadcast(new IssueCreated($issueCount));
         return redirect()->route('directorios.index')->with('status', 'Novedad reportada.');
     }
@@ -101,7 +101,10 @@ class IssuesController extends Controller
      */
     public function destroy(Issue $issue)
     {
-        return 'Destroyed';
+        $issue = $issue->update(['valid_id' => 0]);
+        $issueCount = Issue::all()->where('valid_id', 1)->count();
+        broadcast(new IssueCreated($issueCount));
+        return redirect()->route('issues.index')->with('status', 'Novedad reportada.');
     }
 
     // public function ajax(){

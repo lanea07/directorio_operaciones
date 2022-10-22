@@ -31,9 +31,9 @@ class DependenciaDataTable extends DataTable
                 '<div class="d-flex">'.
                 '<a href="'.route('dependencias.show', $dependencia->id).'" class="link-primary me-auto">'.$dependencia->nombre.'</a>'.
                     '<div>'.
-                        '<a class="mx-1" href="'.route('dependencias.edit', $dependencia->id).'" title="Editar"><i class="fa-solid fa-pen text-primary"></i></a>'.
-                        '<a class="mx-1" href="'.route('issues.create', ['dependencia_id' => $dependencia->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
-                        '<a class="mx-1" href="#" onclick="document.getElementById(\'delete-user-'.$dependencia->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can text-danger"></i></a>'.
+                        '<a class="mx-1 link-primary" href="'.route('dependencias.edit', $dependencia->id).'" title="Editar"><i class="fa-solid fa-pen "></i></a>'.
+                        '<a class="mx-1 link-warning" href="'.route('issues.create', ['dependencia_id' => $dependencia->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus "></i></a>'.
+                        '<a class="mx-1 link-danger" href="#" onclick="document.getElementById(\'delete-user-'.$dependencia->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can "></i></a>'.
                     '</div>'.
                 '</div>'.
                 '<form class="d-none" id="delete-user-'.$dependencia->id.'" action="'.route('dependencias.destroy', $dependencia->id).'" method="post">'.
@@ -43,7 +43,7 @@ class DependenciaDataTable extends DataTable
                 '<div class="d-flex">'.
                 '<a href="'.route('dependencias.show', $dependencia->id).'" class="link-primary me-auto">'.$dependencia->nombre.'</a>'.
                     '<div>'.
-                        '<a class="mx-1" href="'.route('issues.create', ['dependencia_id' => $dependencia->id]).'"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                        '<a class="mx-1 link-warning" href="'.route('issues.create', ['dependencia_id' => $dependencia->id]).'"><i class="fa-solid fa-file-circle-plus"></i></a>'.
                     '</div>'.
                 '</div>'
                 ;

@@ -32,9 +32,9 @@ class DirectorioDataTable extends DataTable
                         '<div class="d-flex">'.
                             '<a href="'.route('directorios.show', $directorio->id).'" class="link-primary me-auto">'.$directorio->nombre.'</a>'.
                             '<div>'.
-                                '<a class="mx-1" href="'.route('directorios.edit', $directorio->id).'" title="Editar"><i class="fa-solid fa-pen text-primary"></i></a>'.
-                                '<a class="mx-1" href="'.route('issues.create', ['directorio_id' => $directorio->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
-                                '<a class="mx-1" href="#" onclick="document.getElementById(\'delete-user-'.$directorio->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can text-danger"></i></a>'.
+                                '<a class="mx-1 link-primary" href="'.route('directorios.edit', $directorio->id).'" title="Editar"><i class="fa-solid fa-pen "></i></a>'.
+                                '<a class="mx-1 link-warning" href="'.route('issues.create', ['directorio_id' => $directorio->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus "></i></a>'.
+                                '<a class="mx-1 link-danger" href="#" onclick="document.getElementById(\'delete-user-'.$directorio->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can "></i></a>'.
                             '</div>'.
                         '</div>'.
                         '<form class="d-none" id="delete-user-'.$directorio->id.'" action="'.route('directorios.destroy', $directorio->id).'" method="post">'.
@@ -44,7 +44,7 @@ class DirectorioDataTable extends DataTable
                         '<div class="d-flex">'.
                             '<a href="'.route('directorios.show', $directorio->id).'" class="link-primary me-auto">'.$directorio->nombre.'</a>'.
                             '<div>'.
-                                '<a class="mx-1" href="'.route('issues.create', ['directorio_id' => $directorio->id]).'"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                                '<a class="mx-1 link-warning" href="'.route('issues.create', ['directorio_id' => $directorio->id]).'"><i class="fa-solid fa-file-circle-plus "></i></a>'.
                             '</div>'.
                         '</div>'
                         ;
@@ -102,7 +102,18 @@ class DirectorioDataTable extends DataTable
                     ->setTableId('directorio-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('Blfrtip')
+                    ->dom('
+                            <"d-flex"
+                                <"mx-2"B>
+                                <"m-2"l>
+                                <"m-2 ms-auto"f>
+                            >
+                            <tr>
+                            <"d-flex"
+                                <"mx-2"i>
+                                <"mx-2 ms-auto"p>
+                            >'
+                        )
                     ->orderBy(0, 'asc')
                     ->parameters([
                         'responsive' => true,

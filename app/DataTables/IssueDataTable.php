@@ -31,8 +31,8 @@ class IssueDataTable extends DataTable
                 '<div class="d-flex">'.
                 '<a href="'.route('issues.show', $issue->id).'" class="link-primary me-auto">'.$issue->directorio->nombre.'</a>'.
                     '<div>'.
-                        '<a class="mx-1" href="'.route('issues.edit', $issue->id).'" title="Ir y Corregir"><i class="fa-solid fa-pen text-primary"></i></a>'.
-                        '<a class="mx-1" href="#" onclick="document.getElementById(\'delete-issue-'.$issue->id.'\').submit()"  title="Descartar"><i class="fa-solid fa-trash-can text-danger"></i></a>'.
+                        '<a class="mx-1 link-primary" href="'.route('issues.edit', $issue->id).'" title="Ir y Corregir"><i class="fa-solid fa-pen "></i></a>'.
+                        '<a class="mx-1 link-danger" href="#" onclick="document.getElementById(\'delete-issue-'.$issue->id.'\').submit()"  title="Descartar"><i class="fa-solid fa-trash-can "></i></a>'.
                     '</div>'.
                 '</div>'.
                 '<form class="d-none" id="delete-issue-'.$issue->id.'" action="'.route('issues.destroy', $issue->id).'" method="post">'.
@@ -42,7 +42,7 @@ class IssueDataTable extends DataTable
                 '<div class="d-flex">'.
                     '<a href="'.route('issues.show', $issue->id).'" class="link-primary">'.$issue->directorio->nombre.'</a>'.
                     '<div>'.
-                        '<a class="mx-1" href="'.route('issues.create', ['issue_id' => $issue->id]).'"><i class="fa-solid fa-file-circle-plus text-warning"></i></a>'.
+                        '<a class="mx-1 link-warning" href="'.route('issues.create', ['issue_id' => $issue->id]).'"><i class="fa-solid fa-file-circle-plus "></i></a>'.
                     '</div>'.
                 '</div>'
                 ;
@@ -62,6 +62,7 @@ class IssueDataTable extends DataTable
     public function query(Issue $model): QueryBuilder
     {
         return $model
+                ->where('valid_id', 1)
                 ->newQuery();
     }
 

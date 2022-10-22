@@ -25,6 +25,22 @@ function format(d) {
 
 $(document).ready(function(){
 
+    var pusher = new Pusher('887fe1015230369e018c', {
+        cluster: 'us2',
+        encrypted: true
+    });
+
+    if ('permissions' in navigator) {
+        Push.Permission.request(
+            function () {
+                console.log('Granted');
+            },
+            function () {
+                console.log('Denied');
+            }
+        )
+    }
+
     $('#directorio-table').on('requestChild.dt', function(e, row) {
         row.child(format(row.data())).show();
     });
@@ -51,86 +67,64 @@ $(document).ready(function(){
     Echo.channel('directorio')
     .listen('DirectorioUpdate', (e) => {
         console.log(e.updatedContact);
-        $("#liveToast").toast('show')
+        $("#liveToast > div.toast-body").html('<a class="nav-link link-primary" href="https://directoriooperaciones.test/directorios/'+e.updatedContact.id+'">'+e.updatedContact.nombre+'</a>')
+        $("#liveToast").toast('show');
+        Push.create("Contacto del directorio actualizado!", {
+            body: e.updatedContact.nombre,
+            icon: 'https://ui-avatars.com/api/?name=' + e.updatedContact.nombre + '&size=64&format=png',
+            timeout: 5000,
+            onClick: function () {
+                window.focus();
+                window.open('https://directoriooperaciones.test/directorios/'+e.updatedContact.id);
+                //this.close();
+            }
+        });
     })
     .listen('.DirectorioUpdate', (e)=>{
         console.log(e.updatedContact);
-        $("#liveToast").toast('show')
+        $("#liveToast > div.toast-body").html('<a class="nav-link link-primary" href="https://directoriooperaciones.test/directorios/'+e.updatedContact.id+'">'+e.updatedContact.nombre+'</a>')
+        $("#liveToast").toast('show');
+        Push.create("Contacto del directorio actualizado!", {
+            body: e.updatedContact.nombre,
+            icon: 'https://ui-avatars.com/api/?name=' + e.updatedContact.nombre + '&size=64&format=png',
+            timeout: 5000,
+            onClick: function () {
+                window.focus();
+                window.open('https://directoriooperaciones.test/directorios/'+e.updatedContact.id);
+                //this.close();
+            }
+        });
     });
 
     Echo.private('user.administrador')
     .listen('IssueCreated', (e) => {
-        $("#notifyContainer > a").addClass('bg-warning');
-        $("#notifyContainer > a > i").removeClass('fa-regular').addClass('fa-solid text-light');
-        $("#notifyContainer > a > span").html(e.issueCreated)
+        if (e.issueCreated > 0) {
+            $("#notifyContainer > a").addClass('bg-warning');
+            $("#notifyContainer > a > i").removeClass('fa-regular').addClass('fa-solid text-light');
+            $("#notifyContainer > a > span").html(e.issueCreated)
+        }
+        else{
+            $("#notifyContainer > a").removeClass('bg-warning');
+            $("#notifyContainer > a > i").addClass('fa-solid text-light').removeClass('fa-regular');
+            $("#notifyContainer > a > span").html('')
+        }
         console.log(e);
     })
     .listen('.IssueCreated', (e) => {
-        $("#notifyContainer > a").addClass('bg-warning');
-        $("#notifyContainer > a > i").removeClass('fa-regular').addClass('fa-solid text-light');
-        $("#notifyContainer > a > span").html(e.issueCreated)
+        if (e.issueCreated > 0) {
+            $("#notifyContainer > a").addClass('bg-warning');
+            $("#notifyContainer > a > i").removeClass('fa-regular').addClass('fa-solid text-light');
+            $("#notifyContainer > a > span").html(e.issueCreated)
+        }
+        else{
+            $("#notifyContainer > a").removeClass('bg-warning');
+            $("#notifyContainer > a > i").addClass('fa-solid text-light').removeClass('fa-regular');
+            $("#notifyContainer > a > span").html('')
+        }
         console.log(e);
     });
 
     $(".dataTable > thead").addClass('table-dark');
-
-    $("#notifyContainer > a").on('click', function(){
-        Push.create("Hello world!", {
-            body: "How's it hangin'?",
-            icon: '/icon.png',
-            timeout: 4000,
-            onClick: function () {
-                window.focus();
-                this.close();
-            }
-        });
-
-
-        //--------Sección para notificaciones usando Pusher y Push.js
-        if (Push.Permission.has()) {
-            // Enable pusher logging - don't include this in production
-            $("#btnRequest").addClass('d-none');
-            Pusher.logToConsole = false;
-
-            var pusher = new Pusher('887fe1015230369e018c', {
-                cluster: 'us2',
-                encrypted: true
-            });
-
-            var channel = pusher.subscribe('channel-Directorio-Operaciones');
-            channel.bind('nuevo-Contacto', function (data) {
-                // Push.create("Nuevo contacto", {
-                //     body: data.nombre + '(' + data.usuarioRed + ')',
-                //     icon: 'Resources/Images/user-cog-solid.png',
-                //     timeout: 10000,
-                //     onClick: function () {
-                //         window.focus();
-                //         this.close();
-                //     }
-                // });
-                Push.create("Hello world!", {
-                    body: "How's it hangin'?",
-                    icon: '/icon.png',
-                    timeout: 4000,
-                    onClick: function () {
-                        window.focus();
-                        this.close();
-                    }
-                });
-            });
-        }
-
-        if ('permissions' in navigator) {
-            Push.Permission.request(
-                function () {
-                    console.log('Granted');
-                },
-                function () {
-                    console.log('Denied');
-                }
-            )
-        }
-    });
 
     $("#roles").selectize({
         plugins: ["remove_button"],

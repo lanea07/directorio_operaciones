@@ -55,9 +55,9 @@
             </ul>
             @if (Auth::check() && auth()->user()->hasRoles(['administrador']))
                 <div id="notifyContainer" class="mr-5">
-                    <a href="{{ App\Models\Issue::all()->count() > 0 ? route('issues.index') : '#' }}" class="position-relative badge rounded-pill {{ App\Models\Issue::all()->count() > 0 ? 'bg-warning' : '' }}">
+                    <a href="{{ App\Models\Issue::all()->where('valid_id', 1)->count() > 0 ? route('issues.index') : '#' }}" class="position-relative badge rounded-pill {{ App\Models\Issue::all()->where('valid_id', 1)->count() > 0 ? 'bg-warning' : '' }}">
                         <i class="fa-solid fa-bell"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">@if ( App\Models\Issue::all()->count() > 0 ) {{ App\Models\Issue::all()->count() }} @endif</span>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">@if ( App\Models\Issue::all()->where('valid_id', 1)->count() > 0 ) {{ App\Models\Issue::all()->where('valid_id', 1)->count() }} @endif</span>
                     </a>
                 </div>
             @endif
