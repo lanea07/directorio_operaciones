@@ -74,16 +74,6 @@ $(document).ready(function(){
 
     $(".dataTable > thead").addClass('table-dark');
 
-
-    navigator.serviceWorker.register('sw.js');
-    Notification.requestPermission(function(result) {
-    if (result === 'granted') {
-        navigator.serviceWorker.ready.then(function(registration) {
-        registration.showNotification('Notification with ServiceWorker');
-        });
-    }
-    });
-
     $("#notifyContainer > a").on('click', function(){
         Push.create("Hello world!", {
             body: "How's it hangin'?",
