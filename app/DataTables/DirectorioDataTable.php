@@ -103,14 +103,14 @@ class DirectorioDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('
-                            <"d-flex"
+                            <"d-md-flex"
                                 <"mx-2"B>
                                 <"m-2"l>
                                 <"toggler m-2">
                                 <"m-2 ms-auto"f>
                             >
                             <tr>
-                            <"d-flex"
+                            <"d-md-flex"
                                 <"mx-2"i>
                                 <"mx-2 ms-auto"p>
                             >'

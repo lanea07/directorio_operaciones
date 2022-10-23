@@ -34,29 +34,25 @@
                             <ul class="nav flex-column pl-3">
 
                                 <li class="nav-item">
-                                    <a id="nuevousuario" class="nav-link {{ setActive('areas.create')}}"
-                                        href="{{ route('areas.create') }}">
+                                    <a id="nuevousuario" class="nav-link {{ setActive('areas.create')}}" href="{{ route('areas.create') }}">
                                         <i class="mr-2 fa-solid fa-folder-tree"></i>Nueva Área
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a id="nuevousuario" class="nav-link {{ setActive('dependencias.create')}}"
-                                        href="{{ route('dependencias.create') }}">
+                                    <a id="nuevousuario" class="nav-link {{ setActive('dependencias.create')}}" href="{{ route('dependencias.create') }}">
                                         <i class="mr-2 fa-solid fa-layer-group"></i>Nueva Dependencia
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a id="nuevousuario" class="nav-link {{ setActive('gerencias.create')}}"
-                                        href="{{ route('gerencias.create') }}">
+                                    <a id="nuevousuario" class="nav-link {{ setActive('gerencias.create')}}" href="{{ route('gerencias.create') }}">
                                         <i class="mr-2 fa-brands fa-screenpal"></i>Nueva Gerencia
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a id="nuevousuario" class="nav-link {{ setActive('directorios.create')}}"
-                                        href="{{ route('directorios.create') }}">
+                                    <a id="nuevousuario" class="nav-link {{ setActive('directorios.create')}}" href="{{ route('directorios.create') }}">
                                         <i class="mr-2 fas fa-user"></i> Nuevo Contacto
                                     </a>
                                 </li>
@@ -82,16 +78,26 @@
                             <ul class="nav flex-column pl-3">
 
                                 <li class="nav-item">
-                                    <a id="nuevousuario" class="nav-link {{ setActive('users.create')}}"
-                                        href="{{ route('users.create') }}">
+                                    <a id="nuevousuario" class="nav-link {{ setActive('users.create')}}" href="{{ route('users.create') }}">
                                         <i class="mr-2 fa-solid fa-user-plus"></i>Crear Usuario
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a id="nuevousuario" class="nav-link {{ setActive('users.index')}}"
-                                        href="{{ route('users.index') }}">
-                                        <i class="mr-2 fa-solid fa-users-gear"></i>Listado
+                                    <a id="listadousuarios" class="nav-link {{ setActive('users.index')}}" href="{{ route('users.index') }}">
+                                        <i class="mr-2 fa-solid fa-users-gear"></i>Listado Usuarios
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a id="nuevorol" class="nav-link {{ setActive('roles.create')}}" href="{{ route('roles.create') }}">
+                                        <i class="fa-solid fa-trowel-bricks"></i>Crear Rol
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a id="listadoroles" class="nav-link {{ setActive('roles.index')}}" href="{{ route('roles.index') }}">
+                                        <i class="fa-solid fa-dice-d6"></i>Listado Roles
                                     </a>
                                 </li>
 

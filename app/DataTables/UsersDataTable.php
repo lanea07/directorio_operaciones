@@ -31,7 +31,6 @@ class UsersDataTable extends DataTable
                         '<a href="'.route('users.show', $user->id).'" class="link-primary me-auto">'.$user->name.'</a>'.
                         '<div>'.
                             '<a class="mx-1 link-primary" href="'.route('users.edit', $user->id).'" title="Editar"><i class="fa-solid fa-penprimary"></i></a>'.
-                            '<a class="mx-1 link-warning" href="'.route('issues.create', ['user_id' => $user->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-pluswarning"></i></a>'.
                             '<a class="mx-1 link-danger" href="#" onclick="document.getElementById(\'delete-user-'.$user->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-candanger"></i></a>'.
                         '</div>'.
                     '</div>'.
@@ -41,9 +40,6 @@ class UsersDataTable extends DataTable
                     '</form>'  :
                     '<div class="d-flex">'.
                         '<a href="'.route('users.show', $user->id).'" class="link-primary me-auto">'.$user->name.'</a>'.
-                        '<div>'.
-                            '<a class="mx-1 link-warning" href="'.route('issues.create', ['user_id' => $user->id]).'"><i class="fa-solid fa-file-circle-pluswarning"></i></a>'.
-                        '</div>'.
                     '</div>'
                     ;
             })
@@ -100,7 +96,19 @@ class UsersDataTable extends DataTable
                     ->setTableId('usersdatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('Blfrtip')
+                    ->dom('
+                        <"d-md-flex"
+                            <"mx-2"B>
+                            <"m-2"l>
+                            <"toggler m-2">
+                            <"m-2 ms-auto"f>
+                        >
+                        <tr>
+                        <"d-md-flex"
+                            <"mx-2"i>
+                            <"mx-2 ms-auto"p>
+                        >'
+                    )
                     ->orderBy(1, 'asc')
                     ->parameters([
                         'responsive' => true,

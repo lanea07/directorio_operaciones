@@ -41,9 +41,6 @@ class IssueDataTable extends DataTable
                 '</form>'  :
                 '<div class="d-flex">'.
                     '<a href="'.route('issues.show', $issue->id).'" class="link-primary">'.$issue->directorio->nombre.'</a>'.
-                    '<div>'.
-                        '<a class="mx-1 link-warning" href="'.route('issues.create', ['issue_id' => $issue->id]).'"><i class="fa-solid fa-file-circle-plus "></i></a>'.
-                    '</div>'.
                 '</div>'
                 ;
             })
@@ -93,14 +90,14 @@ class IssueDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('
-                        <"d-flex"
+                        <"d-md-flex"
                             <"mx-2"B>
                             <"m-2"l>
                             <"toggler m-2">
                             <"m-2 ms-auto"f>
                         >
                         <tr>
-                        <"d-flex"
+                        <"d-md-flex"
                             <"mx-2"i>
                             <"mx-2 ms-auto"p>
                         >'

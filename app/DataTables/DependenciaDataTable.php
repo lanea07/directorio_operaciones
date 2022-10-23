@@ -32,7 +32,6 @@ class DependenciaDataTable extends DataTable
                 '<a href="'.route('dependencias.show', $dependencia->id).'" class="link-primary me-auto">'.$dependencia->nombre.'</a>'.
                     '<div>'.
                         '<a class="mx-1 link-primary" href="'.route('dependencias.edit', $dependencia->id).'" title="Editar"><i class="fa-solid fa-pen "></i></a>'.
-                        '<a class="mx-1 link-warning" href="'.route('issues.create', ['dependencia_id' => $dependencia->id]).'"  title="Reportar Novedad"><i class="fa-solid fa-file-circle-plus "></i></a>'.
                         '<a class="mx-1 link-danger" href="#" onclick="document.getElementById(\'delete-user-'.$dependencia->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can "></i></a>'.
                     '</div>'.
                 '</div>'.
@@ -41,10 +40,7 @@ class DependenciaDataTable extends DataTable
                     csrf_field().
                 '</form>'  :
                 '<div class="d-flex">'.
-                '<a href="'.route('dependencias.show', $dependencia->id).'" class="link-primary me-auto">'.$dependencia->nombre.'</a>'.
-                    '<div>'.
-                        '<a class="mx-1 link-warning" href="'.route('issues.create', ['dependencia_id' => $dependencia->id]).'"><i class="fa-solid fa-file-circle-plus"></i></a>'.
-                    '</div>'.
+                    '<a href="'.route('dependencias.show', $dependencia->id).'" class="link-primary me-auto">'.$dependencia->nombre.'</a>'.
                 '</div>'
                 ;
         })
@@ -76,7 +72,19 @@ class DependenciaDataTable extends DataTable
                     ->setTableId('dependenciadatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('Blfrtip')
+                    ->dom('
+                        <"d-md-flex"
+                            <"mx-2"B>
+                            <"m-2"l>
+                            <"toggler m-2">
+                            <"m-2 ms-auto"f>
+                        >
+                        <tr>
+                        <"d-md-flex"
+                            <"mx-2"i>
+                            <"mx-2 ms-auto"p>
+                        >'
+                    )
                     ->orderBy(1, 'asc')
                     ->parameters([
                         'responsive' => true,

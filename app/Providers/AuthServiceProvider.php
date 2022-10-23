@@ -9,6 +9,7 @@ use App\Models\Dependencia;
 use App\Models\Directorio;
 use App\Models\issue;
 use App\Models\Gerencia;
+use App\Models\Role;
 use App\Models\User;
 use App\Policies\DependenciaPolicy;
 use App\Policies\DirectorioPolicy;
@@ -16,6 +17,7 @@ use App\Policies\IssuePolicy;
 use App\Policies\GerenciaPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\AreaPolicy;
+use App\Policies\RolePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -33,6 +35,7 @@ class AuthServiceProvider extends ServiceProvider
         Gerencia::class => GerenciaPolicy::class,
         Issue::class => IssuePolicy::class,
         User::class => UserPolicy::class,
+        Role::class => RolePolicy::class,
     ];
 
     /**

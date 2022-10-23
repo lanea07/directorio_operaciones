@@ -2,8 +2,9 @@
 
 namespace App\DataTables;
 
-use App\Models\Gerencia;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -11,9 +12,8 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
-use Illuminate\Support\Facades\Auth;
 
-class GerenciaDataTable extends DataTable
+class RoleDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -24,41 +24,40 @@ class GerenciaDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', '')
-            ->addColumn('nombre', function(Gerencia $gerencia){
+            ->addColumn('name', function(Role $role){
                 return
                     Auth::check() && auth()->user()->hasRoles(['administrador']) ?
                     '<div class="d-flex">'.
-                    '<a href="'.route('gerencias.show', $gerencia->id).'" class="link-primary me-auto">'.$gerencia->nombre.'</a>'.
+                    '<a href="'.route('roles.show', $role->id).'" class="link-primary me-auto">'.$role->name.'</a>'.
                         '<div>'.
-                            '<a class="mx-1 link-primary" href="'.route('gerencias.edit', $gerencia->id).'" title="Editar"><i class="fa-solid fa-pen "></i></a>'.
-                            '<a class="mx-1 link-danger" href="#" onclick="document.getElementById(\'delete-user-'.$gerencia->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can "></i></a>'.
+                            '<a class="mx-1 link-primary" href="'.route('roles.edit', $role->id).'" title="Editar"><i class="fa-solid fa-pen "></i></a>'.
+                            '<a class="mx-1 link-danger" href="#" onclick="document.getElementById(\'delete-user-'.$role->id.'\').submit()"  title="Eliminar"><i class="fa-solid fa-trash-can "></i></a>'.
                         '</div>'.
                     '</div>'.
-                    '<form class="d-none" id="delete-user-'.$gerencia->id.'" action="'.route('gerencias.destroy', $gerencia->id).'" method="post">'.
+                    '<form class="d-none" id="delete-user-'.$role->id.'" action="'.route('roles.destroy', $role->id).'" method="post">'.
                         method_field('delete').
                         csrf_field().
                     '</form>'  :
                     '<div class="d-flex">'.
-                        '<a href="'.route('gerencias.show', $gerencia->id).'" class="link-primary">'.$gerencia->nombre.'</a>'.
+                        '<a href="'.route('roles.show', $role->id).'" class="link-primary">'.$role->name.'</a>'.
                     '</div>'
                     ;
             })
-            ->rawColumns(['nombre']);
+            ->addColumn('created_at', function(Role $role){
+                return $role->created_at->diffForHumans();
+            })
+            ->rawColumns(['name']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \Gerencia $model
+     * @param \Role $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Gerencia $model): QueryBuilder
+    public function query(Role $model)
     {
-        return $model
-                ->newQuery()
-                ->orderBy('nombre', 'asc')
-                ;
+        return $model->newQuery();
     }
 
     /**
@@ -66,10 +65,10 @@ class GerenciaDataTable extends DataTable
      *
      * @return \Yajra\DataTables\Html\Builder
      */
-    public function html(): HtmlBuilder
+    public function html()
     {
         return $this->builder()
-                    ->setTableId('gerenciadatatable-table')
+                    ->setTableId('roledatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('
@@ -85,7 +84,7 @@ class GerenciaDataTable extends DataTable
                             <"mx-2 ms-auto"p>
                         >'
                     )
-                    ->orderBy(0, 'asc')
+                    ->orderBy(1, 'asc')
                     ->parameters([
                         'responsive' => true,
                         'buttons' => [
@@ -103,10 +102,11 @@ class GerenciaDataTable extends DataTable
      *
      * @return array
      */
-    protected function getColumns(): array
+    protected function getColumns()
     {
         return [
-            Column::make('nombre'),
+            Column::make('name'),
+            Column::make('created_at'),
         ];
     }
 
@@ -117,6 +117,6 @@ class GerenciaDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Gerencia_' . date('YmdHis');
+        return 'Users_' . date('YmdHis');
     }
 }

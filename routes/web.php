@@ -8,6 +8,7 @@ use App\Http\Controllers\IssuesController;
 use App\Http\Controllers\GerenciasController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\RolesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,7 @@ Route::resources([
     'gerencias' => GerenciasController::class,
     'issues' => IssuesController::class,
     'users' => UsersController::class,
+    'roles' => RolesController::class,
 ]);
 
 // Route::post('issues/ajax', [IssuesController::class, 'ajax']);
