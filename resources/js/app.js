@@ -146,6 +146,17 @@ $(document).ready(function(){
         }
     });
 
+    $("#issuedatatable-table_wrapper > div:nth-child(1) > div.toggler.m-2").html('<div id="togglerCheck" class="form-check form-switch"><input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="valid_0"><label class="form-check-label" for="flexSwitchCheckDefault">Incluir issues ya validados</label></div>')
+
+    $("#togglerCheck").on('click', function() {
+        if ($("#flexSwitchCheckDefault").is(':checked')) {
+            $('#issuedatatable-table').DataTable().ajax.url("?valid_0=1").load();
+        }
+        else {
+            $('#issuedatatable-table').DataTable().ajax.url("?valid_0=0").load();
+        }
+    });
+
     // $('#notifyContainer > a').on('click', ()=>{
     //     var data = new FormData()
     //     $.ajax({

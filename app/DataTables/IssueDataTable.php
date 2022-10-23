@@ -29,7 +29,7 @@ class IssueDataTable extends DataTable
                 return
                 Auth::check() && auth()->user()->hasRoles(['administrador']) ?
                 '<div class="d-flex">'.
-                '<a href="'.route('issues.show', $issue->id).'" class="link-primary me-auto">'.$issue->directorio->nombre.'</a>'.
+                    '<a href="'.route('issues.show', $issue->id).'" class="link-primary me-auto">'.$issue->directorio->nombre.'</a>'.
                     '<div>'.
                         '<a class="mx-1 link-primary" href="'.route('issues.edit', $issue->id).'" title="Ir y Corregir"><i class="fa-solid fa-pen "></i></a>'.
                         '<a class="mx-1 link-danger" href="#" onclick="document.getElementById(\'delete-issue-'.$issue->id.'\').submit()"  title="Descartar"><i class="fa-solid fa-trash-can "></i></a>'.
@@ -47,8 +47,17 @@ class IssueDataTable extends DataTable
                 '</div>'
                 ;
             })
+            ->addColumn('created_at', function(Issue $issue){
+                return $issue->created_at->diffForHumans();
+            })
             ->addColumn('ip', function(Issue $issue){
                 return 'Reportado desde la ip '.$issue->ip_issue_sender;
+            })
+            ->addColumn('valid_id', function(Issue $issue){
+                return $issue->valid_id ?
+                        'Pendiente' :
+                        'Solucionado'
+                        ;
             })
             ->rawColumns(['Contacto', 'Acciones']);
     }
@@ -61,9 +70,15 @@ class IssueDataTable extends DataTable
      */
     public function query(Issue $model): QueryBuilder
     {
-        return $model
+        return request('valid_0') ?
+            $model
+                ->newQuery()
+                ->orderBy('created_at', 'asc') :
+            $model
                 ->where('valid_id', 1)
-                ->newQuery();
+                ->newQuery()
+                ->orderBy('created_at', 'asc')
+                ;
     }
 
     /**
@@ -77,7 +92,19 @@ class IssueDataTable extends DataTable
                     ->setTableId('issuedatatable-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('Blfrtip')
+                    ->dom('
+                        <"d-flex"
+                            <"mx-2"B>
+                            <"m-2"l>
+                            <"toggler m-2">
+                            <"m-2 ms-auto"f>
+                        >
+                        <tr>
+                        <"d-flex"
+                            <"mx-2"i>
+                            <"mx-2 ms-auto"p>
+                        >'
+                    )
                     ->orderBy(1)
                     ->parameters([
                         'responsive' => true,
@@ -101,6 +128,8 @@ class IssueDataTable extends DataTable
         return [
             Column::make('Contacto'),
             Column::make('ip'),
+            Column::make('created_at'),
+            Column::make('valid_id'),
         ];
     }
 

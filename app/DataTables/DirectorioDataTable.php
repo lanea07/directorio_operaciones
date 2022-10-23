@@ -106,6 +106,7 @@ class DirectorioDataTable extends DataTable
                             <"d-flex"
                                 <"mx-2"B>
                                 <"m-2"l>
+                                <"toggler m-2">
                                 <"m-2 ms-auto"f>
                             >
                             <tr>

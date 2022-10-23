@@ -32,13 +32,20 @@
             <div class="d-flex justify-content-between">
                 <a href="{{ route('issues.index') }}">Regresar</a>
                 @auth
-                    <div class="btn-group">
-                        <a class="btn btn-primary" href="{{ route('directorios.edit', $issue->directorio->id) }}">Editar</a>
-                        <a class="btn btn-danger" href="#" onclick="document.getElementById('delete-issue').submit()">Eliminar</a>
-                    </div>
-                    <form class="d-none" id="delete-issue" action="{{ route('issues.destroy', $issue) }}" method="post">
-                        @csrf @method('DELETE')
-                    </form>
+                    @if ($issue->valid_id == 0)
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" disabled>Solucionado</button>
+                        </div>
+                    @else
+                        <div class="btn-group">
+                            <a target="_blank" class="btn btn-primary" href="{{ route('directorios.edit', $issue->directorio->id) }}">Ir y corregir</a>
+                            <a class="btn btn-success" href="#" onclick="document.getElementById('delete-issue').submit()">Descartar</a>
+                        </div>
+                        <form class="d-none" id="delete-issue" action="{{ route('issues.destroy', $issue) }}" method="post">
+                            @csrf @method('DELETE')
+                        </form>
+                    @endif
+
                 @endauth
             </div>
         </div>
