@@ -147,10 +147,29 @@ class DirectorioDataTable extends DataTable
                                 'className' => 'btn btn-sm btn-success m-2',
                             ]
                         ],
-                        'drawCallback' => 'function(){
+                        'initComplete' => 'function(){
                             if(getQueryParameter(\'searchInputTrigger\')){
                                 var table = $("#directorio-table").DataTable();
                                 table.search( getQueryParameter(\'searchInputTrigger\') ).draw()
+
+                                const removeValue = (params, key, valueToRemove) => {
+                                    const values = params.getAll(key);
+                                    if (values.length) {
+                                        params.delete(key);
+                                        for (const value of values) {
+                                            // BEWARE, remember the values will have been
+                                            // covnerted to string
+                                            if (value !== valueToRemove) {
+                                                params.append(key, value);
+                                            }
+                                        }
+                                    }
+                                    return params; // For chaining if desired
+                                };
+
+                                const params = new URLSearchParams();
+                                removeValue(params, "searchInputTrigger", getQueryParameter(\'searchInputTrigger\'));
+
                             }
                         }',
                     ]);
