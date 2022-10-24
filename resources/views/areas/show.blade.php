@@ -25,15 +25,20 @@
         <div class="align-items-center d-flex flex-column-reverse flex-md-row justify-content-between">
             <a href="{{ route('areas.index') }}">Regresar</a>
             @auth
-            <div class="btn-group">
-                <a class="btn btn-primary" href="{{ route('areas.edit', $gerencia) }}">Editar</a>
-                <a class="btn btn-danger" href="#"
-                    onclick="document.getElementById('delete-gerencia').submit()">Eliminar</a>
-            </div>
-            <form class="d-none" id="delete-gerencia" action="{{ route('areas.destroy', $gerencia) }}"
-                method="post">
-                @csrf @method('DELETE')
-            </form>
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ route('areas.edit', $gerencia) }}">Editar</a>
+                    <a class="btn btn-info" href="{{ route('directorios.index', [ 'searchInputTrigger' => $area->nombre ]) }}" title="Busqueda Aproximada">Ver Relacionados</a>
+                    <a class="btn btn-danger" href="#"
+                        onclick="document.getElementById('delete-gerencia').submit()">Eliminar</a>
+                </div>
+                <form class="d-none" id="delete-gerencia" action="{{ route('areas.destroy', $gerencia) }}"
+                    method="post">
+                    @csrf @method('DELETE')
+                </form>
+            @else
+                <div class="btn-group">
+                    <a class="btn btn-info" href="{{ route('directorios.index', [ 'searchInputTrigger' => $dependencia->nombre ]) }}" title="Busqueda Aproximada">Ver Relacionados</a>
+                </div>
             @endauth
         </div>
     </div>
