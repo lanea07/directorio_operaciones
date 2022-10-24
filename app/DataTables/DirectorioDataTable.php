@@ -61,17 +61,33 @@ class DirectorioDataTable extends DataTable
             ->filter(function($query){
                 $request = request()->query('search');
                 if ($request['value']) {
+                    $searchValues = explode(" ", $request['value']);
+                    foreach ($searchValues as $value) {
+                        $orderBy[] = 'SIGN(LOCATE(\''.$value.'\',`nombre`)) +';
+                        $orderBy[] = 'SIGN(LOCATE(\''.$value.'\',`usuario_de_red`)) +';
+                    }
                     $query
-                    ->orWhere('nombre', 'like', "%" . $request['value'] . "%")
-                    ->orWhere('usuario_de_red', 'like', "%" . $request['value'] . "%")
-                    ->orWhereHas('area', function ($query) use ($request){
-                        $query->where('areas.nombre', 'LIKE', "%" . $request['value'] . "%");
+                    ->Where(function ($query) use ($searchValues) {
+                        foreach ($searchValues as $value) {
+                            $query->where('nombre', 'like', "%{$value}%");
+                            $query->orWhere('usuario_de_red', 'like', "%{$value}%");
+                        }
                     })
-                    ->orWhereHas('dependencia', function ($query) use ($request){
-                        $query->where('dependencias.nombre', 'LIKE', "%" . $request['value'] . "%");
-                    });
+                    ->orWhereHas('area', function ($query) use ($searchValues){
+                        foreach ($searchValues as $value) {
+                            $query->where('areas.nombre', 'like', "%{$value}%");
+                        }
+                    })
+                    ->orWhereHas('dependencia', function ($query) use ($searchValues){
+                        foreach ($searchValues as $value) {
+                            $query->where('dependencias.nombre', 'like', "%{$value}%");
+                        }
+                    })
+                    ->orderByRaw(substr(implode(' ', $orderBy),0,strlen(implode(' ', $orderBy))-1).'DESC')
+                    ;
                 };
             })
+
             ->rawColumns(['nombre','correo','area','dependencia','Acciones']);
     }
 
@@ -87,7 +103,7 @@ class DirectorioDataTable extends DataTable
                 ->newQuery()
                 ->select('directorios.*')
                 ->with(['dependencia','area'])
-                ->orderBy('nombre', 'asc')
+                //->orderBy('nombre', 'asc')
                 ;
     }
 
