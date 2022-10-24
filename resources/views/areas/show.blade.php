@@ -37,7 +37,7 @@
                 </form>
             @else
                 <div class="btn-group">
-                    <a class="btn btn-info" href="{{ route('directorios.index', [ 'searchInputTrigger' => $dependencia->nombre ]) }}" title="Busqueda Aproximada">Ver Relacionados</a>
+                    <a class="btn btn-info" href="{{ route('directorios.index', [ 'searchInputTrigger' => $area->nombre ]) }}" title="Busqueda Aproximada">Ver Relacionados</a>
                 </div>
             @endauth
         </div>
