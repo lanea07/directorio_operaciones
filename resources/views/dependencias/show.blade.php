@@ -46,6 +46,10 @@
                     <form class="d-none" id="delete-dependencia" action="{{ route('dependencias.destroy', $dependencia) }}" method="post">
                         @csrf @method('DELETE')
                     </form>
+                @else
+                    <div class="btn-group">
+                        <a class="btn btn-info" href="{{ route('directorios.index', [ 'searchInputTrigger' => $dependencia->nombre ]) }}" title="Busqueda Aproximada">Ver Relacionados</a>
+                    </div>
                 @endauth
             </div>
         </div>
