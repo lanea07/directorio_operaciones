@@ -10,18 +10,18 @@
                 <h1>{{ $role->name }}</h1>
             </div>
 
-            <div class="row mb-4">
-                <div class="col-4">
+            <div class="row mb-4 d-md-flex flex-column flex-md-row">
+                <div class="col-md-4 me-md-5">
                     <h6 class="text-muted">Creado</h6>
                     <p class="text-black-50">{{ $role->created_at->diffForHumans() }} ({{$role->created_at->format('d/m/Y')}})</p>
                 </div>
-                <div class="col-4">
+                <div class="col-md-4 me-md-5">
                     <h6 class="text-muted">Actualizado</h6>
                     <p class="text-black-50">{{ $role->updated_at->diffForHumans() }} ({{$role->updated_at->format('d/m/Y')}})</p>
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between">
+            <div class="align-items-center d-flex flex-column-reverse flex-md-row justify-content-between">
                 <a href="{{ route('roles.index') }}">Regresar</a>
                 @auth
                     <div class="btn-group">

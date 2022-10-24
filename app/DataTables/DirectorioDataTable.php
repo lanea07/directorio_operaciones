@@ -58,6 +58,12 @@ class DirectorioDataTable extends DataTable
             ->addColumn('dependencia', function(Directorio $directorio){
                 return '<a href="'.route('dependencias.show', $directorio->dependencia->id).'" class="link-primary">'.$directorio->dependencia->nombre.'</a>';
             })
+            ->addColumn('telefono', function(Directorio $directorio){
+                return '<a href="tel:'.$directorio->dependencia->telefono.'" class="link-primary">'.$directorio->dependencia->telefono.'</a>';
+            })
+            ->addColumn('extension', function(Directorio $directorio){
+                return $directorio->extension;
+            })
             ->filter(function($query){
                 $request = request()->query('search');
                 if ($request['value']) {
@@ -88,7 +94,7 @@ class DirectorioDataTable extends DataTable
                 };
             })
 
-            ->rawColumns(['nombre','correo','area','dependencia','Acciones']);
+            ->rawColumns(['nombre','correo','area','dependencia','telefono','Acciones']);
     }
 
     /**
@@ -141,6 +147,12 @@ class DirectorioDataTable extends DataTable
                                 'className' => 'btn btn-sm btn-success m-2',
                             ]
                         ],
+                        'drawCallback' => 'function(){
+                            if(getQueryParameter(\'searchInputTrigger\')){
+                                var table = $("#directorio-table").DataTable();
+                                table.search( getQueryParameter(\'searchInputTrigger\') ).draw()
+                            }
+                        }',
                     ]);
     }
 
@@ -159,6 +171,8 @@ class DirectorioDataTable extends DataTable
             //       ->addClass('dt-control'),
             Column::make('nombre'),
             Column::make('usuario_de_red'),
+            Column::make('telefono'),
+            Column::make('extension'),
             Column::make('area'),
             Column::make('dependencia'),
             Column::make('correo'),

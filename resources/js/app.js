@@ -22,14 +22,19 @@ function format(d) {
     '</div>';
 }
 
+//Function declare to retrieve url parameter when redirected from Gerencia, Dependencia or Area to Directorio Index view
+window.getQueryParameter = (param) => new URLSearchParams(document.location.search.substring(1)).get(param);
 
 $(document).ready(function(){
 
+
+    //New Pusher Connection
     var pusher = new Pusher('887fe1015230369e018c', {
         cluster: 'us2',
         encrypted: true
     });
 
+    //Notifications Permission Request
     if ('permissions' in navigator) {
         Push.Permission.request(
             function () {
@@ -41,10 +46,10 @@ $(document).ready(function(){
         )
     }
 
+    //Required for showing child rows in datatables
     $('#directorio-table').on('requestChild.dt', function(e, row) {
         row.child(format(row.data())).show();
     });
-
 
     $('#directorio-table tbody').on('click', 'td.dt-control', function () {
         var tr = $(this).closest('tr');
@@ -62,8 +67,10 @@ $(document).ready(function(){
         }
     });
 
+    //Toast initialization
     $("#liveToast").toast()
 
+    //Receiving event on Directorio contact updated, duplicated for testing purposes
     Echo.channel('directorio')
     .listen('DirectorioUpdate', (e) => {
         console.log(e.updatedContact);
@@ -96,6 +103,7 @@ $(document).ready(function(){
         });
     });
 
+    //Receiving event for new Directorio issue, duplicated for testing purposes
     Echo.private('user.administrador')
     .listen('IssueCreated', (e) => {
         if (e.issueCreated > 0) {
@@ -124,8 +132,10 @@ $(document).ready(function(){
         console.log(e);
     });
 
+    //Manual adding dark class to all DataTables headers
     $(".dataTable > thead").addClass('table-dark');
 
+    //Initialization of Selectize plugin for roles select in New Role creation page
     $("#roles").selectize({
         plugins: ["remove_button"],
         delimiter: ",",
@@ -138,6 +148,7 @@ $(document).ready(function(){
         },
     });
 
+    //Handler for navbar for hiding when clicked outside
     $(document).click(function (e) {
         var clickover = $(event.target);
         var _opened = $(".navbar-collapse").hasClass("navbar-collapse");
@@ -146,8 +157,10 @@ $(document).ready(function(){
         }
     });
 
+    //Add toggler for issues in Issue list
     $("#issuedatatable-table_wrapper > div:nth-child(1) > div.toggler.m-2").html('<div id="togglerCheck" class="form-check form-switch"><input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="valid_0"><label class="form-check-label" for="flexSwitchCheckDefault">Incluir issues ya validados</label></div>')
 
+    //When issue list toggler enabled, trigger update of issues list DataTable
     $("#togglerCheck").on('click', function() {
         if ($("#flexSwitchCheckDefault").is(':checked')) {
             $('#issuedatatable-table').DataTable().ajax.url("?valid_0=1").load();
@@ -157,19 +170,4 @@ $(document).ready(function(){
         }
     });
 
-    // $('#notifyContainer > a').on('click', ()=>{
-    //     var data = new FormData()
-    //     $.ajax({
-    //         type: "post",
-    //         url: "issues/ajax",
-    //         data: data,
-    //         dataType: "json",
-    //         processData: false,
-    //         contentType: false,
-    //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-    //         success: function (response) {
-
-    //         }
-    //     });
-    // });
 });

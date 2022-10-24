@@ -15,32 +15,32 @@
                 <h1>{{ $user->name }}</h1>
             </div>
 
-            <div class="row mb-4">
-                <div class="col-4">
+            <div class="row mb-4 d-md-flex flex-column flex-md-row">
+                <div class="col-md-4 me-md-5">
                     <h4>Correo</h4>
                     <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
                 </div>
             </div>
 
-            <div class="row mb-4">
-                <div class="col-4">
+            <div class="row mb-4 d-md-flex flex-column flex-md-row">
+                <div class="col-md-4 me-md-5">
                     <h4>Permisos / Roles</h4>
                     {{ mb_convert_case($user->roles->pluck('name')->implode(' - '), MB_CASE_TITLE) }}
                 </div>
             </div>
 
-            <div class="row mb-4">
-                <div class="col-4">
+            <div class="row mb-4 d-md-flex flex-column flex-md-row">
+                <div class="col-md-4 me-md-5">
                     <h6 class="text-muted">Creado</h6>
                     <p class="text-black-50">{{ $user->created_at->diffForHumans() }} ({{$user->created_at->format('d/m/Y')}})</p>
                 </div>
-                <div class="col-4">
+                <div class="col-md-4 me-md-5">
                     <h6 class="text-muted">Actualizado</h6>
                     <p class="text-black-50">{{ $user->updated_at->diffForHumans() }} ({{$user->updated_at->format('d/m/Y')}})</p>
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between">
+            <div class="align-items-center d-flex flex-column-reverse flex-md-row justify-content-between">
                 <a href="{{ route('users.index') }}">Regresar</a>
                 @auth
                     <div class="btn-group">

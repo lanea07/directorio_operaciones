@@ -11,40 +11,40 @@
                 <p class="text-secondary">{{ $directorio->usuario_de_red }} || Pertenece a Gerencia: {{ $directorio->area->gerencia->nombre }}</p>
             </div>
 
-            <div class="row mb-4">
-                <div class="col-4">
+            <div class="row mb-4 d-md-flex flex-column flex-md-row">
+                <div class="col-md-4 me-md-5">
                     <h4>Correo</h4>
                     <a href="mailto:{{ $directorio->correo }}">{{ $directorio->correo }}</a>
                 </div>
-                <div class="col-4">
+                <div class="col-md-4 me-md-5">
                     <h4>Número de contacto</h4>
                     <a href="tel:60{{ $directorio->dependencia->telefono }}">{{ $directorio->dependencia->telefono }} - Ext. {{ $directorio->extension}}</a>
                 </div>
             </div>
 
-            <div class="row mb-4">
-                <div class="col-4">
+            <div class="row mb-4 d-md-flex flex-column flex-md-row">
+                <div class="col-md-4 me-md-5">
                     <h4>Dependencia</h4>
                     {{ $directorio->dependencia->nombre }}
                 </div>
-                <div class="col-4">
+                <div class="col-md-4 me-md-5">
                     <h4>Área</h4>
                     {{ $directorio->area->nombre }}
                 </div>
             </div>
 
-            <div class="row mb-4">
-                <div class="col-4">
+            <div class="row mb-4 d-md-flex flex-column flex-md-row">
+                <div class="col-md-4 me-md-5">
                     <h6 class="text-muted">Creado</h6>
                     <p class="text-black-50">{{ $directorio->created_at->diffForHumans() }} ({{$directorio->created_at->format('d/m/Y')}})</p>
                 </div>
-                <div class="col-4">
+                <div class="col-md-4 me-md-5">
                     <h6 class="text-muted">Actualizado</h6>
                     <p class="text-black-50">{{ $directorio->updated_at->diffForHumans() }} ({{$directorio->updated_at->format('d/m/Y')}})</p>
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between">
+            <div class="align-items-center d-flex flex-column-reverse flex-md-row justify-content-between">
                 <a href="{{ route('directorios.index') }}">Regresar</a>
                 @auth
                     <div class="btn-group">

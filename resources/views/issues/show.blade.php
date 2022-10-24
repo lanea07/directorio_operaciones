@@ -11,25 +11,25 @@
                 <p class="text-secondary">Reportado desde {{ $issue->ip_issue_sender }}</p>
             </div>
 
-            <div class="row mb-4">
-                <div class="col-12">
+            <div class="row mb-4 d-md-flex flex-column flex-md-row">
+                <div class="col">
                     <label for="text" class="form-label">Novedad</label>
                     <textarea type="email" class="form-control" name="text" id="text" disabled>{{ old('text', $issue->text) }}</textarea>
                 </div>
             </div>
 
-            <div class="row mb-4">
-                <div class="col-4">
+            <div class="row mb-4 d-md-flex flex-column flex-md-row">
+                <div class="col-md-4 me-md-5">
                     <h6 class="text-muted">Creado</h6>
                     <p class="text-black-50">{{ $issue->created_at->diffForHumans() }} ({{$issue->created_at->format('d/m/Y')}})</p>
                 </div>
-                <div class="col-4">
+                <div class="col-md-4 me-md-5">
                     <h6 class="text-muted">Actualizado</h6>
                     <p class="text-black-50">{{ $issue->updated_at->diffForHumans() }} ({{$issue->updated_at->format('d/m/Y')}})</p>
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between">
+            <div class="align-items-center d-flex flex-column-reverse flex-md-row justify-content-between">
                 <a href="{{ route('issues.index') }}">Regresar</a>
                 @auth
                     @if ($issue->valid_id == 0)
