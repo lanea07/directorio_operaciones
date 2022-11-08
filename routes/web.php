@@ -9,6 +9,7 @@ use App\Http\Controllers\GerenciasController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RolesController;
+use App\Http\Livewire\ShowDirectorios;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,8 @@ Route::resources([
     'users' => UsersController::class,
     'roles' => RolesController::class,
 ]);
+
+Route::get('/livewire', ShowDirectorios::class);
 
 // Route::post('issues/ajax', [IssuesController::class, 'ajax']);
 

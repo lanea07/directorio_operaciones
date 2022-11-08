@@ -18,3 +18,34 @@
 body > div.min-h-screen > main {
     margin-bottom: 80px;
 }
+
+.imgContainer {
+    position: relative;
+    overflow: hidden;
+    max-width: 300px;
+    z-index: 1;
+}
+
+.imgContainer::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #e5e5e5;
+    opacity: 0;
+    transition: .5s ease all;
+}
+
+img {
+    transition: .5s ease all; width: 100%; object-fit:cover;
+}
+
+.imgContainer:hover img {
+    transform: scale(1.1);
+}
+
+.imgContainer:hover::after {
+    opacity: 0.2;
+}
