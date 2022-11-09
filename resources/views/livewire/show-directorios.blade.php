@@ -7,10 +7,33 @@
 
     <div class="row">
         <div class="col-2">
+
             <select class="form-select" aria-label="Ordenar por nombre..." wire:model="orderByName">
                 <option value="asc">Ascendente</option>
                 <option value="desc">Descendente</option>
             </select>
+
+
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Áreas
+                    </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body" style="overflow: auto; height: 100vh;">
+                        @foreach ($areas as $area)
+                            <div class="form-check">
+                                <input wire:model="areasFilter" class="form-check-input" type="checkbox" value="{{ $area->id }}">
+                                <label class="form-check-label" for="flexCheckDefault">{{ $area->nombre }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="col-10">
             <div class="row">
