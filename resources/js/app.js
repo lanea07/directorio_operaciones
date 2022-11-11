@@ -171,3 +171,16 @@ $(document).ready(function(){
     });
 
 });
+
+$(window).scroll(function() {
+    if (window.scrollY > 56) {
+        $('#topNavBar').addClass('fixed-top');
+        // add padding top to show content behind navbar
+        var navbar_height = document.querySelector('.navbar').offsetHeight;
+        document.body.style.paddingTop = navbar_height + 'px';
+    } else {
+        $('#topNavBar').removeClass('fixed-top');
+         // remove padding top from body
+        document.body.style.paddingTop = '0';
+    }
+});

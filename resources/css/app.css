@@ -49,3 +49,9 @@ img {
 .imgContainer:hover::after {
     opacity: 0.2;
 }
+
+.fixed-top {
+    top: -40px !important;
+    transform: translateY(40px);
+    transition: transform .7s;
+}
